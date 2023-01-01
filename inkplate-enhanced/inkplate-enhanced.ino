@@ -33,13 +33,68 @@ Libraries:
 3. https://github.com/tzapu/WiFiManager
 
 */
+#define pinWake GPIO_NUM_36
 
 void setup() {
-  // put your setup code here, to run once:
+  pinMode(pinWake, INPUT);
 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
+}
+
+int taskButton(int pin, uint8_t *pStageOut)
+{
+  uint32_t tStart = millis();
+  uint32_t tStop = 0;
+  uint8_t stage = 0;
+  uint8_t doUpdate = 0;
+
+  while(tStop == 0) //loop until button released.
+  {
+    if(digitalRead(pin))
+    {
+      tStop = millis();
+    }
+    else
+    {
+      switch(stage) //quantize how long button is held into 2 stages.
+      {
+        case 0:
+          if(millis() - tStart > 5000) stage = 1;
+          doUpdate = 1;
+        break;
+
+        case 1:
+          if(millis() - tStart > 10000) stage = 2;
+          doUpdate = 1;
+        break;
+
+        default: break;
+      }
+      
+      if(doUpdate) //show a notice on the display.
+      {
+        switch(stage)
+        {
+          case 1:
+            //TODO: draw notice "release to update photos".
+          break;
+
+          case 2:
+            //TODO: draw notice "release to change settings".
+          break;
+
+          default: break;
+        }
+
+        doUpdate = 0;
+      }
+    }
+  }
+
+  pStageOut = *stage;
+  return 0;
 }
