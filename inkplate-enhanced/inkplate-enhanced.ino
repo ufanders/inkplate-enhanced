@@ -36,6 +36,8 @@ Libraries:
 #include "Inkplate.h"
 Inkplate display(INKPLATE_3BIT);
 
+#include "statusBar.h"
+
 void setup() {
 
   display.begin();
