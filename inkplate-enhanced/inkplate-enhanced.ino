@@ -33,9 +33,13 @@ Libraries:
 3. https://github.com/tzapu/WiFiManager
 
 */
+#include "Inkplate.h"
+Inkplate display(INKPLATE_3BIT);
 
 void setup() {
-  // put your setup code here, to run once:
+
+  display.begin();
+  //display.clearDisplay(); //TODO: is this necessary? Only clears framebuffer.
 
 }
 
@@ -43,3 +47,4 @@ void loop() {
   // put your main code here, to run repeatedly:
 
 }
+
