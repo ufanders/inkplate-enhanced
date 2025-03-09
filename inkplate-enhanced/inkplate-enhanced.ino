@@ -33,6 +33,7 @@ Libraries:
 3. https://github.com/tzapu/WiFiManager
 
 */
+#include "wifiPortal.h"
 
 void setup() {
   // put your setup code here, to run once:
