@@ -35,12 +35,30 @@ Libraries:
 */
 #include "wifiPortal.h"
 
-void setup() {
-  // put your setup code here, to run once:
+/*
+class IntParameter : public WiFiManagerParameter {
+public:
+    IntParameter(const char *id, const char *placeholder, long value, const uint8_t length = 10)
+        : WiFiManagerParameter("") {
+        init(id, placeholder, String(value).c_str(), length, "", WFM_LABEL_BEFORE);
+    }
 
+    long getValue() {
+        return String(WiFiManagerParameter::getValue()).toInt();
+    }
+};
+*/
+
+struct Settings {
+  int i;
+  char s[20];
+} set;
+
+void setup() {
+  wifiPortalInit();
+  wifiPortalStart();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+  wifiPortalProcess();
 }
