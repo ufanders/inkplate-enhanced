@@ -33,10 +33,23 @@ Libraries:
 3. https://github.com/tzapu/WiFiManager
 
 */
+#include <ArduinoJson.h>
+
+const char localConfigFn = "config.txt";
+localConfig_t localConfig;
 
 void setup() {
-  // put your setup code here, to run once:
+  //TODO: open config file.
+  //TODO: if config file not found, create one with default entries.
 
+  Serial.println(F("Loading config."));
+  loadConfiguration(filename, config);
+
+  Serial.println(F("Saving config."));
+  saveConfiguration(filename, config);
+
+  Serial.println(F("Printing config file."));
+  printFile(filename);
 }
 
 void loop() {
