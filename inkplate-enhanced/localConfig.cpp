@@ -10,12 +10,11 @@ int localConfigInit(Inkplate *pInkplate)
     return 1; //failure.
 }
 
-void loadConfiguration(const char* filename, localConfig_t& config)
+int loadConfiguration(const char* filename, localConfig_t& config)
 {
     // Open file for reading
-    int r = folder.open("/");
-    
-    file.open(filename, O_READ);
+    bool r = file.open(filename, O_READ);
+    if(!r) return 1; //failure.
 
     // Allocate a temporary JsonDocument
     JsonDocument doc;
@@ -38,47 +37,52 @@ void loadConfiguration(const char* filename, localConfig_t& config)
 
     // Close the file (Curiously, File's destructor doesn't close the file)
     file.close();
+
+    return 0;
   }
 
-void saveConfiguration(const char* filename, const localConfig_t& config)
+int saveConfiguration(const char* filename, const localConfig_t& config)
 {
-  /*
-  // Delete existing file, otherwise the configuration is appended to the file
-  folder.remove(filename);
+  bool r;
+  char newFn[12+1]; strncpy(newFn, filename, 8); strcpy(&newFn[strlen(filename)-4], ".old");
+  //file.remove(newFn); //remove previous backup.
+  //file.rename(filename, newFn); //create new backup.
+  // rename existing file, otherwise the configuration is appended to the file
 
   // Open file for writing
-  file = folder.open(filename, FILE_WRITE);
-  if (!file) {
+  r = file.open(filename, O_WRITE);
+  if (!r) {
     Serial.println(F("Failed to create file"));
-    return;
+    return 1;
   }
 
-  // Allocate a temporary JsonDocument
-  JsonDocument doc;
+  JsonDocument doc; // Allocate a temporary JsonDocument
 
   // Set the values in the document
-  doc["hostname"] = config.hostname;
-  doc["port"] = config.port;
+  doc["wifiSsid"] = config.wifiSsid;
+  doc["wifiPass"] = config.wifiPass;
+  doc["googlePhotosShareUrl"] = config.googlePhotosShareUrl;
 
   // Serialize JSON to file
   if (serializeJson(doc, file) == 0) {
     Serial.println(F("Failed to write to file"));
+    return 1;
   }
 
-  // Close the file
-  file.close();
-  */
+  r = file.close();
+
+  if(r) return 0;
+  return 1;
 }
 
 // Prints the content of a file to the Serial
-void printFile(const char* filename)
+int printFile(const char* filename)
 {
-  /*
   // Open file for reading
-  file = folder.open(filename);
-  if (!file) {
+  bool r = file.open(filename);
+  if (!r) {
     Serial.println(F("Failed to read file"));
-    return;
+    return 1;
   }
 
   // Extract each characters by one by one
@@ -87,8 +91,9 @@ void printFile(const char* filename)
   }
   Serial.println();
 
-  // Close the file
-  file.close();
-  */
+  r = file.close();
+
+  if(r) return 0;
+  return 1;
 }
 
