@@ -8,3 +8,9 @@ typedef struct
   int imageTransitionInterval;
 } localConfig_t;
 
+#include "Inkplate.h"
+
+int localConfigInit(Inkplate *pInkplate);
+void loadConfiguration(const char* filename, localConfig_t& config);
+void saveConfiguration(const char* filename, const localConfig_t& config);
+void printFile(const char* filename);
